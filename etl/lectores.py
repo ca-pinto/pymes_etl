@@ -30,3 +30,6 @@ def leer_json(contenido: bytes) -> pd.DataFrame:
         raise ValueError("El JSON no contiene registros reconocibles")
 
     return pd.json_normalize(registros, sep="_").astype("string")
+
+def leer_xml(contenido: bytes) -> pd.DataFrame:
+    return pd.read_xml(io.BytesIO(contenido), xpath="//row", dtype=str)

@@ -4,7 +4,7 @@ import streamlit as st
 
 st.title("ETL para PYMEs")
 
-archivo = st.file_uploader("Sube un archivo", type=["csv", "xlxs", "json"])
+archivo = st.file_uploader("Sube un archivo", type=["csv", "xlsx", "json"])
 
 if archivo is not None:
     contenido = archivo.getvalue()
