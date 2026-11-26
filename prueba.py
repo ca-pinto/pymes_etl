@@ -1,10 +1,13 @@
 from pathlib import Path
-from etl.lectores import leer_csv
-from etl.lectores import leer_json
-from etl.lectores import leer_xml
+from etl.lectores import leer_archivo
 
-df = leer_xml(Path("datos_muestra/muestra_xml.xml").read_bytes())
-print(type(df))
-print(df.head())
-print(df.columns.tolist())
-print(len(df), "filas")
+for nombre in ["muestra_json.json", "muestra_xml.xml", "Dataset3.csv"]:
+    df = leer_archivo(nombre, Path("datos_muestra", nombre).read_bytes())
+    print(nombre, "->", df.shape)
+    print(df.columns.tolist())
+    print()
+
+try:
+    leer_archivo("reporte.pdf", b"")
+except ValueError as e:
+    print("Error esperado:", e)

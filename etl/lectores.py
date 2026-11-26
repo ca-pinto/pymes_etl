@@ -1,6 +1,8 @@
 import io
 import pandas as pd
 import json 
+from pathlib import Path
+
 
 def decodificar (contenido:bytes) -> str:
     try:
@@ -33,3 +35,18 @@ def leer_json(contenido: bytes) -> pd.DataFrame:
 
 def leer_xml(contenido: bytes) -> pd.DataFrame:
     return pd.read_xml(io.BytesIO(contenido), xpath="//row", dtype=str)
+
+LECTORES = {
+    ".csv": leer_csv,
+    ".tsv": leer_csv,
+    ".txt": leer_csv,
+    ".json": leer_json,
+    ".xml": leer_xml,
+}
+
+def leer_archivo(nombre: str, contenido: bytes) -> pd.DataFrame:
+    ext = Path(nombre).suffix.lower()
+    if ext not in LECTORES: 
+        raise ValueError(f"Formato '{ext}' no válido. Formatos soportados: {', '.join(LECTORES)}")
+    else:
+        return LECTORES[ext] (contenido)
