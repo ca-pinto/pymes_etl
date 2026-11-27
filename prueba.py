@@ -1,6 +1,7 @@
 from pathlib import Path
 from etl.lectores import leer_archivo
 from etl.mapeo import mapear_columnas
+from etl.limpieza import a_numero
 
 resultados = {}
 for nombre in ["muestra_json.json", "muestra_xml.xml", "Dataset3.csv"]:
