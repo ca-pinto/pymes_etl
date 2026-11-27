@@ -1,13 +1,15 @@
 from pathlib import Path
 from etl.lectores import leer_archivo
+from etl.mapeo import mapear_columnas
 
+resultados = {}
 for nombre in ["muestra_json.json", "muestra_xml.xml", "Dataset3.csv"]:
     df = leer_archivo(nombre, Path("datos_muestra", nombre).read_bytes())
-    print(nombre, "->", df.shape)
-    print(df.columns.tolist())
-    print()
+    df_m, mapeo, ignoradas = mapear_columnas(df)
+    print(nombre, "->", df_m.shape)
+    print("  columnas:", df_m.columns.tolist())
+    print("  ignoradas:", ignoradas)
+    resultados[nombre] = df_m.columns.tolist()
 
-try:
-    leer_archivo("reporte.pdf", b"")
-except ValueError as e:
-    print("Error esperado:", e)
+iguales = len({tuple(sorted(c)) for c in resultados.values()}) == 1
+print("\n¿Los tres formatos quedaron con las mismas columnas?", iguales)
